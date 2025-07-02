@@ -4,9 +4,45 @@ Este projeto foi desenvolvido como parte de um desafio técnico em Ciência de D
 
 A proposta simula um cenário real dentro de um grande fundo de investimentos, onde a solução seria utilizada por analistas quantitativos como suporte em dashboards de decisão. O foco está em aplicar técnicas de análise de dados e machine learning para construir um modelo preditivo com **mínimo de 75% de acurácia** no conjunto de teste.
 
-Para isso, foram utilizados dados históricos do índice IBOVESPA, com período diário e abrangência mínima de dois anos. Todo o pipeline foi construído desde a coleta, limpeza e preparação dos dados até a avaliação do modelo.
+Para isso, foram utilizados dados históricos do índice IBOVESPA, com período diário e abrangência de dez anos. Todo o pipeline foi construído desde a coleta, limpeza e preparação dos dados até a avaliação do modelo.
 
 O objetivo principal é detectar padrões relevantes que possam antecipar o comportamento do mercado no curto prazo, servindo como ponto de partida para análises quantitativas mais robustas.
+
+O objetivo principal deste projeto é utilizar dados históricos de mercado para treinar um modelo `RandomForestClassifier` que possa prever se o índice Ibovespa fechará em alta ou em baixa no dia seguinte, com base em indicadores técnicos e na variação percentual.
+
+
+## 🚀 **Instalação**
+
+Antes de instalar os requisitos do projeto, você precisa ter as seguintes ferramentas instaladas no seu sistema:
+
+* Python 3.11
+* Git
+* A biblioteca C do [TA-Lib](https://github.com/TA-Lib/ta-lib-python)
+
+Após instalar os pré-requisitos, siga os passos abaixo para configurar o projeto:
+
+1.  **Clone o repositório:**
+
+    ```bash
+    git clone [https://github.com/JacksonvBarbosa/Analise_Indice_Ibovespa/tree/main](https://github.com/JacksonvBarbosa/Analise_Indice_Ibovespa/tree/main)
+    cd Analise_Indice_Ibovespa
+    ```
+
+2.  **Crie e ative um ambiente virtual:**
+
+    ```bash
+    python -m venv venv
+    # No Windows:
+    .\venv\Scripts\activate
+    # No macOS/Linux:
+    source venv/bin/activate
+    ```
+
+3.  **Instale as dependências do Python:**
+
+    ```bash
+    python -m pip install -r requirements.txt
+    ```
 
 ---
 
@@ -15,17 +51,12 @@ O objetivo principal é detectar padrões relevantes que possam antecipar o comp
 Os dados utilizados são históricos do índice **IBOVESPA**, disponíveis publicamente em:  
 🔗 [Investing.com – BOVESPA Dados Históricos](https://br.investing.com/indices/bovespa-historical-data)
 
-> Recomendação: selecionar o período **“diário”** e baixar pelo menos **2 anos de dados** para garantir a robustez do modelo.
-
 ---
 
-## 💻 Tecnologias Utilizadas
+## 💻 **Tecnologias Utilizadas**
 
-- **Python** – Linguagem principal do projeto  
-- **Pandas** – Manipulação e análise de dados tabulares  
-- **NumPy** – Operações numéricas e vetoriais  
-- **Scikit-learn (sklearn)** – Modelos de machine learning e métricas de avaliação  
-- **Matplotlib** – Geração de gráficos e visualizações  
-- **Seaborn** – Visualização estatística avançada  
-- **Jupyter Notebook** – Ambiente de desenvolvimento interativo  
-- **Google Colab** – Execução em nuvem e compartilhamento de notebooks
+* **Coleta de Dados:** `yfinance`
+* **Manipulação de Dados:** `pandas`
+* **Indicadores Técnicos:** `TA-Lib`
+* **Visualização:** `plotly`, `matplotlib`
+* **Modelagem:** `scikit-learn`
