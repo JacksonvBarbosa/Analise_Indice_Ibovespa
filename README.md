@@ -8,8 +8,7 @@ Para isso, foram utilizados dados históricos do índice IBOVESPA, com período 
 
 O objetivo principal é detectar padrões relevantes que possam antecipar o comportamento do mercado no curto prazo, servindo como ponto de partida para análises quantitativas mais robustas.
 
-O objetivo principal deste projeto é utilizar dados históricos de mercado para treinar um modelo `RandomForestClassifier` que possa prever se o índice Ibovespa fechará em alta ou em baixa no dia seguinte, com base em indicadores técnicos e na variação percentual.
-
+---
 
 ## 🚀 **Instalação**
 
@@ -24,7 +23,7 @@ Após instalar os pré-requisitos, siga os passos abaixo para configurar o proje
 1.  **Clone o repositório:**
 
     ```bash
-    git clone [https://github.com/JacksonvBarbosa/Analise_Indice_Ibovespa/tree/main](https://github.com/JacksonvBarbosa/Analise_Indice_Ibovespa/tree/main)
+    git clone https://github.com/JacksonvBarbosa/Analise_Indice_Ibovespa/tree/main
     cd Analise_Indice_Ibovespa
     ```
 
@@ -41,7 +40,7 @@ Após instalar os pré-requisitos, siga os passos abaixo para configurar o proje
 3.  **Instale as dependências do Python:**
 
     ```bash
-    python -m pip install -r requirements.txt
+    pip install -r requirements.txt
     ```
 
 ---
