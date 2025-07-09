@@ -14,7 +14,6 @@ Antes de instalar os requisitos do projeto, você precisa ter as seguintes ferra
 
 * Python 3.11
 * Git
-* A biblioteca C do [TA-Lib](https://github.com/TA-Lib/ta-lib-python)
 
 Após instalar os pré-requisitos, siga os passos abaixo para configurar o projeto:
 
@@ -53,6 +52,6 @@ Os dados utilizados são históricos do índice **IBOVESPA**, disponíveis publi
 ## 💻 **Tecnologias utilizadas**
 
 * **Coleta e manipulação de dados:** `pandas`
-* **Indicadores técnicos:** `TA-Lib`
+* **Indicadores técnicos:** `pandas_ta`
 * **Visualização:** `matplotlib`, `seaborn`, `plotly`
 * **Modelagem:** `scikit-learn`
