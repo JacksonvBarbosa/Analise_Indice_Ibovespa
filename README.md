@@ -34,7 +34,7 @@ Após instalar os pré-requisitos, siga os passos abaixo para configurar o proje
     source venv/bin/activate
     ```
 
-3.  **Instale as dependências do Python:**
+3.  **Instale as dependências do projeto:**
 
     ```bash
     pip install -r requirements.txt
