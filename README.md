@@ -55,3 +55,4 @@ Os dados utilizados são históricos do índice **IBOVESPA**, disponíveis publi
 * **Indicadores técnicos:** `pandas_ta`
 * **Visualização:** `matplotlib`, `seaborn`, `plotly`
 * **Modelagem:** `scikit-learn`
+* **Versionamento**: Git e GitHub
