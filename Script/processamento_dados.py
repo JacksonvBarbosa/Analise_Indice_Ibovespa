@@ -103,7 +103,7 @@ def create_next_day_features(df_prep, df):
     df_prep['vol_10d'] = df_prep['return_1d'].rolling(10).std()
     df_prep['vol_regime'] = df_prep['vol_3d'] / df_prep['vol_10d']
 
-    # ope, hig, low
+    # open, high, low
     df_prep['open'] = df['open'].copy()
     df_prep['high'] = df['high'].shift(1).copy()
     df_prep['low'] = df['low'].shift(1).copy()
@@ -115,13 +115,13 @@ def create_next_day_features(df_prep, df):
     
     # MACD rápido
     try:
-        # Try passing the entire DataFrame first
-        macd_df = TA.MACD(df_prep)
+        # Tenta passar o DataFrame inteiro primeiro
+        macd_df = TA.MACD(df_prep, column='close')
         df_prep['macd'] = macd_df['MACD']
         df_prep['macd_signal'] = macd_df['SIGNAL']
         df_prep['macd_hist'] = df_prep['macd'] - df_prep['macd_signal']
     except:
-        # Fallback: manual MACD calculation
+        # Retorno: calculo manual do MACD
         ema_12 = df_prep['close'].ewm(span=12).mean()
         ema_26 = df_prep['close'].ewm(span=26).mean()
         macd = ema_12 - ema_26
@@ -178,4 +178,3 @@ df_model
 df_model.isna().sum().sort_values()
 
 df_model.to_csv('../data/processed/arquivo-modelo.csv', index=False)
-

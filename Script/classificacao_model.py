@@ -1,21 +1,22 @@
 # %%
+# importe da classe funçoes
+import funcoes as fc
+
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import randint, uniform
-from sklearn import tree
-# Separa dados para uma respostamais confiavel e não embara os dados
-from sklearn.model_selection import TimeSeriesSplit
-# importe do Pipeline de dados e dos modelos de teste
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
+
+# modulos de Machine Learning
 from xgboost import XGBClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import TimeSeriesSplit
+from sklearn.metrics import roc_auc_score
 from catboost import CatBoostClassifier
+
+# modulos stats
+from statsmodels.stats.contingency_tables import mcnemar
 
 # %%
 
@@ -48,10 +49,7 @@ X, y = df_model[best_features1], df_model[target]
 X_train, X_test = X.iloc[:-30], X.iloc[-30:]
 y_train, y_test = y.iloc[:-30], y.iloc[-30:]
 
-print(X_train.shape)
-print(y_train.shape)
-print(X_test.shape)
-print(y_test.shape)
+print(X_train.shape, y_train.shape, X_test.shape, y_test.shape)
 
 # %%
 # Média das variáveis de treino e teste
@@ -65,51 +63,11 @@ print('Taxa variável resposta teste',y_test.mean())
 tscv = TimeSeriesSplit(n_splits=5)
 
 # %%
-
-# FUNÇÕES E PIPELINES
-
-# Pipelines dos Modelos
-def construir_pipeline(nome_modelo, modelo):
-    return Pipeline([
-        ('scaler', StandardScaler()),
-        (nome_modelo, modelo)
-    ])
-
-# Função executa o RandomizedSearchCV
-def executar_random_search(pipeline, param_grid, X_train, y_train, cv, n_iter=10, scoring='f1_weighted'):
-    busca = RandomizedSearchCV(
-        estimator=pipeline,
-        param_distributions=param_grid,
-        n_iter=n_iter,
-        scoring=scoring,
-        cv=cv,
-        verbose=1,
-        random_state=42,
-        n_jobs=-1
-    )
-    busca.fit(X_train, y_train)
-    return busca
-
-# Função de avaliação dos modelos
-def avaliar_modelo(modelo_treinado, X_test, y_test):
-    y_pred = modelo_treinado.predict(X_test)
-    print("Melhores parâmetros:", modelo_treinado.best_params_)
-    print("Acurácia:", accuracy_score(y_test, y_pred))
-    print("Relatório de Classificação:\n", classification_report(y_test, y_pred))
-
-    conf_mat = confusion_matrix(y_test, y_pred)
-    sns.heatmap(conf_mat, annot=True, fmt='d', cmap='Blues')
-    plt.xlabel('Predito')
-    plt.ylabel('Real')
-    plt.title('Matriz de Confusão')
-    plt.show()
-
-# %%
 # EXECUTANDO FUNÇÕES
 
 # XGBoost
-pipeline_xgb = construir_pipeline('xgb', XGBClassifier(use_label_encoder=False, eval_metric='logloss'))
-
+#pipeline_xgb = construir_pipeline('xgb', XGBClassifier(use_label_encoder=False, eval_metric='logloss'))
+pipeline_xgb = fc.construir_pipeline('xgb', XGBClassifier(eval_metric='logloss'))
 # parametros para o XGBOOST
 param_grid_xgb = {
     'xgb__n_estimators': randint(100, 150),             # Menos árvores
@@ -125,13 +83,17 @@ param_grid_xgb = {
 }
 
 #grid_xgb = GridSearchCV(pipe_xgb, param_grid_xgb, cv=tscv)
-modelo_xgb = executar_random_search(pipeline_xgb, param_grid_xgb, X_train, y_train, tscv)
-avaliar_modelo(modelo_xgb, X_test, y_test)
+modelo_xgb = fc.executar_random_search(pipeline_xgb, param_grid_xgb, X_train, y_train, tscv)
+fc.avaliar_cross_validation(modelo_xgb, X_train, y_train, cv=tscv)
+fc.avaliar_modelo(modelo_xgb, X_test, y_test)
+y_test_proba = modelo_xgb.predict_proba(X_test)[:,1]
+auc_test = roc_auc_score(y_test, y_test_proba)
+print(f'AUC Treino: {auc_test}')
 
 # %%
 # CatBoost
-pipeline_cat = construir_pipeline('cat', CatBoostClassifier(verbose=0))
-
+#pipeline_cat = construir_pipeline('cat', CatBoostClassifier(verbose=0))
+pipeline_cat = fc.construir_pipeline('cat', CatBoostClassifier(verbose=0))
 # parametros para o CATBOOST
 param_grid_cat = {
     'cat__iterations': randint(300, 400),               # Menos iterações
@@ -145,13 +107,17 @@ param_grid_cat = {
 }
 
 #grid_xgb = GridSearchCV(pipe_xgb, param_grid_xgb, cv=tscv)
-modelo_cat = executar_random_search(pipeline_cat, param_grid_cat, X_train, y_train, tscv)
-avaliar_modelo(modelo_cat, X_test, y_test)
+modelo_cat = fc.executar_random_search(pipeline_cat, param_grid_cat, X_train, y_train, tscv)
+fc.avaliar_cross_validation(modelo_cat, X_train, y_train, cv=tscv)
+fc.avaliar_modelo(modelo_cat, X_test, y_test)
+y_test_proba = modelo_cat.predict_proba(X_test)[:,1]
+auc_test = roc_auc_score(y_test, y_test_proba)
+print(f'AUC Treino: {auc_test}')
 
 # %%
 # RandomForest
-pipeline_rfc = construir_pipeline('rfc', RandomForestClassifier(random_state=42, n_jobs=-1))
-
+#pipeline_rfc = construir_pipeline('rfc', RandomForestClassifier(random_state=42, n_jobs=-1))
+pipeline_rfc = fc.construir_pipeline('rfc', RandomForestClassifier(random_state=42, n_jobs=-1))
 # parametros para o RandomForest
 param_grid_rfc = {
     'rfc__n_estimators': randint(100, 150),         # Número de árvores
@@ -162,23 +128,31 @@ param_grid_rfc = {
     # 'rcf__max_features': uniform(0.5, 1.0)        # Exemplo de parâmetro float
 }
 
-modelo_rfc = executar_random_search(pipeline_rfc, param_grid_rfc, X_train, y_train, tscv)
-avaliar_modelo(modelo_rfc, X_test, y_test)
+modelo_rfc = fc.executar_random_search(pipeline_rfc, param_grid_rfc, X_train, y_train, tscv)
+fc.avaliar_cross_validation(modelo_rfc, X_train, y_train, cv=tscv)
+fc.avaliar_modelo(modelo_rfc, X_test, y_test)
+y_test_proba = modelo_rfc.predict_proba(X_test)[:,1]
+auc_test = roc_auc_score(y_test, y_test_proba)
+print(f'AUC Treino: {auc_test}')
 
 # %%
+print('XGB x RFC:\n',fc.stat_msnemar(modelo_xgb, modelo_rfc, X_test, y_test))
+print('XGB x CAT:\n', fc.stat_msnemar(modelo_xgb, modelo_cat, X_test, y_test))
+print('CAT x RFC\n', fc.stat_msnemar(modelo_cat, modelo_rfc, X_test, y_test))
+# %%
 # Associação de cada features com suas importaâncias
-features_importance = (pd.Series(pipeline_xgb.best_estimator_,
+'''features_importance = (pd.Series(pipeline_xgb.best_estimator_,
                                  index=X_train.columns)
                                  .sort_values(ascending=False).
                                  reset_index()
-                                 )
+                                 )'''
 
 # Uma estratégia (Mais tem várias que possa ser utilizada) é utilizar a acumulação da porcentagem da importância
 # E por exemplos selecionar as que vão até 95% 
-features_importance['acum.'] = features_importance[0].cumsum() # Acumular com o cumsum()
-features_importance[features_importance['acum.'] < 0.96].sort_values(by='acum.',ascending=False)
+'''features_importance['acum.'] = features_importance[0].cumsum() # Acumular com o cumsum()
+features_importance[features_importance['acum.'] < 0.96].sort_values(by='acum.',ascending=False)'''
 
 # %%
 
-best_features1 = features_importance[features_importance['acum.'] < 0.96]['index'].sort_values().to_list()
-best_features1
+'''best_features1 = features_importance[features_importance['acum.'] < 0.96]['index'].sort_values().to_list()
+best_features1'''
