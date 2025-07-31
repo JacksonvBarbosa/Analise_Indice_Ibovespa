@@ -20,7 +20,7 @@ Após instalar os pré-requisitos, siga os passos abaixo para configurar o proje
 1.  **Clone o repositório:**
 
     ```bash
-    git clone https://github.com/JacksonvBarbosa/Analise_Indice_Ibovespa/tree/sofia
+    git clone https://github.com/JacksonvBarbosa/Analise_Indice_Ibovespa/tree/main
     cd Analise_Indice_Ibovespa
     ```
 
