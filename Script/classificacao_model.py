@@ -1,6 +1,6 @@
 # %%
 # importe da classe funçoes
-import funcoes as fc
+import funcoes_ml as fc
 
 import pandas as pd
 import numpy as np
@@ -156,3 +156,11 @@ features_importance[features_importance['acum.'] < 0.96].sort_values(by='acum.',
 
 '''best_features1 = features_importance[features_importance['acum.'] < 0.96]['index'].sort_values().to_list()
 best_features1'''
+
+# %%
+
+display(X_train)
+display(y_train)
+display(X_test)
+display(y_test)
+display(y_train.mean())
