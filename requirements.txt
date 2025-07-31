@@ -33,7 +33,7 @@ joblib==1.5.1
 jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
 kiwisolver==1.4.8
-langtable==0.0.68
+langtable==0.0.69
 libcomps==0.1.21
 libdnf==0.74.0
 louis==3.33.0
@@ -60,7 +60,7 @@ pwquality==1.4.5
 pycairo==1.25.1
 pycparser==2.20
 pycrypto==2.6.1
-pycryptodomex==3.21.0
+pycryptodomex==3.23.0
 pycups==2.0.4
 pyenchant==3.2.2
 pygit2==1.17.0
@@ -71,7 +71,7 @@ pyOpenSSL==25.0.0
 pyparsing==3.2.3
 pyparted==3.13.0
 PySocks==1.7.1
-python-augeas==1.1.0
+python-augeas==1.2.0
 python-dateutil==2.8.2
 python-linux-procfs==0.7.3
 python-meh==0.52
@@ -81,7 +81,7 @@ pytz==2025.2
 pyudev==0.24.3
 pyxdg==0.27
 PyYAML==6.0.2
-pyynl @ file:///builddir/build/BUILD/kernel-6.15.5-build/kernel-6.15.5/linux-6.15.5-200.fc42.x86_64/tools/net/ynl
+pyynl @ file:///builddir/build/BUILD/kernel-6.15.7-build/kernel-6.15.7/linux-6.15.7-200.fc42.x86_64/tools/net/ynl
 RapidFuzz==3.11.0
 referencing==0.36.2
 regex==2024.11.6
@@ -113,4 +113,4 @@ tzdata==2025.2
 urllib3==2.3.0
 websockets==14.1
 xkbregistry==0.3
-yt-dlp==2025.6.25
+yt-dlp==2025.6.30
